@@ -1,2 +1,16 @@
 ###
 GET http://localhost:3000
+###
+GET http://localhost:3000/quizzes
+###
+POST http://localhost:3000/quizzes?answer=2
+###
+POST http://localhost:3000/quizzes
+Content-Type: application/json
+
+{
+  "title": "The Java Logo",
+  "text": "What is depicted on the Java logo?",
+  "options": ["Robot","Tea leaf","Cup of coffee","Bug"],
+  "answer": 2
+}

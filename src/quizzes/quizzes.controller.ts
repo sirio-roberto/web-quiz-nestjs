@@ -7,13 +7,13 @@ export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Post()
-  postAnswer(@Query() query: any) {
-    return this.quizzesService.answerQuestion(parseInt(query.answer));
+  create(@Body() quiz: Quiz) {
+    return this.quizzesService.create(quiz);
   }
 
   @Post()
-  create(@Body() quiz: Quiz) {
-    return this.quizzesService.create(quiz);
+  postAnswer(@Query() query: any) {
+    return this.quizzesService.answerQuestion(parseInt(query.answer));
   }
 
   @Get()

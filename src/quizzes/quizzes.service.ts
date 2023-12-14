@@ -4,18 +4,18 @@ import { ResponseEntity } from './entities/response.entity';
 
 @Injectable()
 export class QuizzesService {
-  private quiz: Quiz = {
-    title: 'The Java Logo',
-    text: 'What is depicted on the Java logo?',
-    options: ['Robot', 'Tea leaf', 'Cup of coffee', 'Bug'],
-  };
+  private quizzes: Quiz[] = [];
+  private currentId: number = 1;
 
   create(quiz: Quiz) {
-    return 'This action adds a new quiz';
+    quiz.id = this.currentId++;
+    this.quizzes.push(quiz);
+
+    return this.getQuizWithoutAnswer(quiz);
   }
 
   findAll() {
-    return this.quiz;
+    return this.quizzes.map(this.getQuizWithoutAnswer);
   }
 
   answerQuestion(answer: number) {
@@ -24,5 +24,14 @@ export class QuizzesService {
     } else {
       return new ResponseEntity(false, 'Wrong answer! Please, try again.');
     }
+  }
+
+  private getQuizWithoutAnswer(quiz: Quiz): Quiz {
+    return {
+      id: quiz.id,
+      title: quiz.title,
+      text: quiz.text,
+      options: quiz.options,
+    };
   }
 }
