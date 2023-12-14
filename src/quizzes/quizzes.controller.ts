@@ -19,9 +19,9 @@ export class QuizzesController {
     return this.quizzesService.create(quiz);
   }
 
-  @Post()
-  postAnswer(@Query() query: any) {
-    return this.quizzesService.answerQuestion(parseInt(query.answer));
+  @Post(':id')
+  postAnswer(@Param('id', new ParseIntPipe()) id: number, @Query() query: any) {
+    return this.quizzesService.answerQuestion(id, parseInt(query.answer));
   }
 
   @Get()

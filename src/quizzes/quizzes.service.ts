@@ -19,15 +19,22 @@ export class QuizzesService {
   }
 
   findOne(id: number) {
+    const quiz: Quiz = this.findByIdOrThrow(id);
+    return this.getQuizWithoutAnswer(quiz);
+  }
+
+  findByIdOrThrow(id: number) {
     const quiz: Quiz = this.quizzes.find((q) => q.id === id);
     if (!quiz) {
       throw new BadRequestException('Quiz not found');
     }
-    return this.getQuizWithoutAnswer(quiz);
+    return quiz;
   }
 
-  answerQuestion(answer: number) {
-    if (answer === 2) {
+  answerQuestion(id: number, answer: number) {
+    const quiz: Quiz = this.findByIdOrThrow(id);
+
+    if (quiz.answer === answer) {
       return new ResponseEntity(true, "Congratulations, you're right!");
     } else {
       return new ResponseEntity(false, 'Wrong answer! Please, try again.');
