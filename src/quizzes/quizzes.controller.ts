@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  ParseIntPipe,
+  Param,
+} from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
 
@@ -19,5 +27,10 @@ export class QuizzesController {
   @Get()
   findAll() {
     return this.quizzesService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id', new ParseIntPipe()) id: number) {
+    return this.quizzesService.findOne(id);
   }
 }

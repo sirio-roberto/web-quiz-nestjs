@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Quiz } from './entities/quiz.entity';
 import { ResponseEntity } from './entities/response.entity';
 
@@ -16,6 +16,14 @@ export class QuizzesService {
 
   findAll() {
     return this.quizzes.map(this.getQuizWithoutAnswer);
+  }
+
+  findOne(id: number) {
+    const quiz: Quiz = this.quizzes.find((q) => q.id === id);
+    if (!quiz) {
+      throw new BadRequestException('Quiz not found');
+    }
+    return this.getQuizWithoutAnswer(quiz);
   }
 
   answerQuestion(answer: number) {
