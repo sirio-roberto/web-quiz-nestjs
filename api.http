@@ -15,4 +15,9 @@ Content-Type: application/json
   "answer": [2, 0]
 }
 ###
-POST http://localhost:3000/quizzes/2?answer=1
+POST http://localhost:3000/quizzes/2/solve
+Content-Type: application/json
+
+{
+  "answer": [2, 0]
+}

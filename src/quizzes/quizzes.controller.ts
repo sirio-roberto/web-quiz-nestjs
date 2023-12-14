@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Query,
   ParseIntPipe,
   Param,
 } from '@nestjs/common';
@@ -19,10 +18,13 @@ export class QuizzesController {
     return this.quizzesService.create(quiz);
   }
 
-  // @Post(':id')
-  // postAnswer(@Param('id', new ParseIntPipe()) id: number, @Query() query: any) {
-  //   return this.quizzesService.answerQuestion(id, parseInt(query.answer));
-  // }
+  @Post(':id/solve')
+  postAnswer(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() answerObj: any,
+  ) {
+    return this.quizzesService.answerQuestion(id, answerObj);
+  }
 
   @Get()
   findAll() {

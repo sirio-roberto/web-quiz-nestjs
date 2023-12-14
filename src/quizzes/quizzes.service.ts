@@ -9,6 +9,9 @@ export class QuizzesService {
 
   create(quiz: Quiz) {
     quiz.id = this.currentId++;
+    if (!quiz.answer) {
+      quiz.answer = [];
+    }
     this.quizzes.push(quiz);
 
     return this.getQuizWithoutAnswer(quiz);
@@ -31,15 +34,33 @@ export class QuizzesService {
     return quiz;
   }
 
-  // answerQuestion(id: number, answer: number) {
-  //   const quiz: Quiz = this.findByIdOrThrow(id);
+  answerQuestion(id: number, answerObj: any) {
+    const quiz: Quiz = this.findByIdOrThrow(id);
 
-  //   if (quiz.answer === answer) {
-  //     return new ResponseEntity(true, "Congratulations, you're right!");
-  //   } else {
-  //     return new ResponseEntity(false, 'Wrong answer! Please, try again.');
-  //   }
-  // }
+    const answerArray = answerObj.answer;
+
+    if (this.arraysEqual(quiz.answer, answerArray)) {
+      return new ResponseEntity(true, "Congratulations, you're right!");
+    } else {
+      return new ResponseEntity(false, 'Wrong answer! Please, try again.');
+    }
+  }
+
+  arraysEqual(array1: any[], array2: any[]) {
+    if (!array1 || !array2 || array1.length !== array2.length) {
+      return false;
+    }
+    const sortedArray1 = array1.sort();
+    const sortedArray2 = array2.sort();
+
+    for (let i = 0; i < array1.length; i++) {
+      if (sortedArray1[i] !== sortedArray2[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   private getQuizWithoutAnswer(quiz: Quiz): Quiz {
     return {
