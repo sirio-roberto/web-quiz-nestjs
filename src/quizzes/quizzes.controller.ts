@@ -19,10 +19,10 @@ export class QuizzesController {
     return this.quizzesService.create(quiz);
   }
 
-  @Post(':id')
-  postAnswer(@Param('id', new ParseIntPipe()) id: number, @Query() query: any) {
-    return this.quizzesService.answerQuestion(id, parseInt(query.answer));
-  }
+  // @Post(':id')
+  // postAnswer(@Param('id', new ParseIntPipe()) id: number, @Query() query: any) {
+  //   return this.quizzesService.answerQuestion(id, parseInt(query.answer));
+  // }
 
   @Get()
   findAll() {

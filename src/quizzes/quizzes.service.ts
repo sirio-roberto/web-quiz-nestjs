@@ -31,15 +31,15 @@ export class QuizzesService {
     return quiz;
   }
 
-  answerQuestion(id: number, answer: number) {
-    const quiz: Quiz = this.findByIdOrThrow(id);
+  // answerQuestion(id: number, answer: number) {
+  //   const quiz: Quiz = this.findByIdOrThrow(id);
 
-    if (quiz.answer === answer) {
-      return new ResponseEntity(true, "Congratulations, you're right!");
-    } else {
-      return new ResponseEntity(false, 'Wrong answer! Please, try again.');
-    }
-  }
+  //   if (quiz.answer === answer) {
+  //     return new ResponseEntity(true, "Congratulations, you're right!");
+  //   } else {
+  //     return new ResponseEntity(false, 'Wrong answer! Please, try again.');
+  //   }
+  // }
 
   private getQuizWithoutAnswer(quiz: Quiz): Quiz {
     return {
