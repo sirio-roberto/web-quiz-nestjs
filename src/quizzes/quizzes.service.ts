@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Quiz } from './entities/quiz.entity';
 import { ResponseEntity } from './entities/response.entity';
 import { Repository } from 'typeorm';
@@ -26,12 +26,16 @@ export class QuizzesService {
   }
 
   async findOne(id: number) {
-    const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
-    return this.getQuizWithoutAnswer(quiz);
+    try {
+      const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
+      return this.getQuizWithoutAnswer(quiz);
+    } catch {
+      throw new BadRequestException('Quiz not found');
+    }
   }
 
   async answerQuestion(id: number, answerObj: any) {
-    const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
+    const quiz: Quiz = await this.findOne(id);
 
     const answerArray = answerObj.answer;
 
