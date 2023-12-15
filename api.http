@@ -2,10 +2,13 @@
 ###
 GET http://localhost:3000
 ###
-GET http://localhost:3000/quizzes
+GET http://localhost:3000/quizzes?page=1&limit=10
 Authorization: {{auth}}
 ###
-GET http://localhost:3000/quizzes/3
+GET http://localhost:3000/quizzes/5
+Authorization: {{auth}}
+###
+DELETE http://localhost:3000/quizzes/8
 Authorization: {{auth}}
 ###
 POST http://localhost:3000/quizzes
@@ -19,7 +22,7 @@ Content-Type: application/json
   "answer": [0, 2]
 }
 ###
-POST http://localhost:3000/quizzes/3/solve
+POST http://localhost:3000/quizzes/7/solve
 Authorization: {{auth}}
 Content-Type: application/json
 
