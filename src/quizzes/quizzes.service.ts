@@ -1,41 +1,37 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Quiz } from './entities/quiz.entity';
 import { ResponseEntity } from './entities/response.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class QuizzesService {
-  private quizzes: Quiz[] = [];
-  private currentId: number = 1;
+  constructor(
+    @InjectRepository(Quiz)
+    private quizRepo: Repository<Quiz>,
+  ) {}
 
-  create(quiz: Quiz) {
-    quiz.id = this.currentId++;
+  async create(quiz: Quiz) {
     if (!quiz.answer) {
       quiz.answer = [];
     }
-    this.quizzes.push(quiz);
+    const dbQuiz = await this.quizRepo.save(quiz);
 
+    return this.getQuizWithoutAnswer(dbQuiz);
+  }
+
+  async findAll() {
+    const quizzes = await this.quizRepo.find();
+    return quizzes.map(this.getQuizWithoutAnswer);
+  }
+
+  async findOne(id: number) {
+    const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
     return this.getQuizWithoutAnswer(quiz);
   }
 
-  findAll() {
-    return this.quizzes.map(this.getQuizWithoutAnswer);
-  }
-
-  findOne(id: number) {
-    const quiz: Quiz = this.findByIdOrThrow(id);
-    return this.getQuizWithoutAnswer(quiz);
-  }
-
-  findByIdOrThrow(id: number) {
-    const quiz: Quiz = this.quizzes.find((q) => q.id === id);
-    if (!quiz) {
-      throw new BadRequestException('Quiz not found');
-    }
-    return quiz;
-  }
-
-  answerQuestion(id: number, answerObj: any) {
-    const quiz: Quiz = this.findByIdOrThrow(id);
+  async answerQuestion(id: number, answerObj: any) {
+    const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
 
     const answerArray = answerObj.answer;
 
