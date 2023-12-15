@@ -1,11 +1,15 @@
+@auth = Basic 2@sirius.com:strongpassword
 ###
 GET http://localhost:3000
 ###
 GET http://localhost:3000/quizzes
+Authorization: {{auth}}
 ###
 GET http://localhost:3000/quizzes/3
+Authorization: {{auth}}
 ###
 POST http://localhost:3000/quizzes
+Authorization: {{auth}}
 Content-Type: application/json
 
 {
@@ -16,8 +20,20 @@ Content-Type: application/json
 }
 ###
 POST http://localhost:3000/quizzes/3/solve
+Authorization: {{auth}}
 Content-Type: application/json
 
 {
   "answer": [2, 0]
 }
+###
+POST http://localhost:3000/users/register
+Content-Type: application/json
+
+{
+  "email": "2@sirius.com",
+  "password": "strongpassword"
+}
+###
+GET http://localhost:3000/users
+Authorization: {{auth}}

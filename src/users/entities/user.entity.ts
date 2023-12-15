@@ -18,7 +18,7 @@ export class User {
   @IsEmail()
   @IsString()
   @IsNotEmpty()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @MinLength(5)

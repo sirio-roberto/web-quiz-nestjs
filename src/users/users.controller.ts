@@ -5,9 +5,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -19,6 +21,7 @@ export class UsersController {
     return this.usersService.register(user);
   }
 
+  @UseGuards(AuthGuard('basic'))
   @Get()
   findAll() {
     return this.usersService.findAll();

@@ -5,10 +5,13 @@ import {
   Body,
   ParseIntPipe,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('basic'))
 @Controller('quizzes')
 export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}

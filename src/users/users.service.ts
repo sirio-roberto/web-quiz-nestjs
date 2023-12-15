@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,8 +12,12 @@ export class UsersService {
   ) {}
 
   async register(user: User) {
-    user.password = await bcrypt.hash(user.password, 10);
-    this.userRepo.save(user);
+    try {
+      user.password = await bcrypt.hash(user.password, 10);
+      await this.userRepo.save(user);
+    } catch {
+      throw new BadRequestException('Email address is already taken');
+    }
   }
 
   // should be edited later to hide password
