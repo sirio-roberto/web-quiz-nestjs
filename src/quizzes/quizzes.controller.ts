@@ -6,6 +6,8 @@ import {
   ParseIntPipe,
   Param,
   UseGuards,
+  Delete,
+  Request,
 } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
@@ -37,5 +39,13 @@ export class QuizzesController {
   @Get(':id')
   findOne(@Param('id', new ParseIntPipe()) id: number) {
     return this.quizzesService.findOne(id);
+  }
+
+  @Delete(':id')
+  deleteQuizz(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Request() req: any,
+  ) {
+    return this.quizzesService.delete(id, req.user);
   }
 }

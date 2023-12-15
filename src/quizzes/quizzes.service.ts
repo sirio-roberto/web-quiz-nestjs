@@ -3,6 +3,7 @@ import { Quiz } from './entities/quiz.entity';
 import { ResponseEntity } from './entities/response.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class QuizzesService {
@@ -69,5 +70,11 @@ export class QuizzesService {
       text: quiz.text,
       options: quiz.options,
     };
+  }
+
+  async delete(id: number, user: User) {
+    const quiz: Quiz = await this.findOne(id);
+
+    await this.quizRepo.delete({ id });
   }
 }
