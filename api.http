@@ -12,10 +12,10 @@ Content-Type: application/json
   "title": "The Java Logo",
   "text": "What is depicted on the Java logo?",
   "options": ["Robot","Tea leaf","Cup of coffee","Bug"],
-  "answer": [2, 0]
+  "answer": [0, 2]
 }
 ###
-POST http://localhost:3000/quizzes/2/solve
+POST http://localhost:3000/quizzes/3/solve
 Content-Type: application/json
 
 {
