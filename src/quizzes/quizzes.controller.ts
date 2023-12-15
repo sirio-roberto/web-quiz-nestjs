@@ -10,6 +10,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
@@ -34,8 +35,13 @@ export class QuizzesController {
   }
 
   @Get()
-  findAll() {
-    return this.quizzesService.findAll();
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    limit = limit > 50 ? 50 : limit;
+    return this.quizzesService.findAll({
+      page,
+      limit,
+      route: 'http://localhost:3000/quizzes',
+    });
   }
 
   @Get(':id')

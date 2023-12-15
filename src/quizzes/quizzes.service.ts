@@ -8,6 +8,11 @@ import { ResponseEntity } from './entities/response.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class QuizzesService {
@@ -28,9 +33,10 @@ export class QuizzesService {
     return this.getQuizWithoutAnswer(dbQuiz);
   }
 
-  async findAll() {
-    const quizzes = await this.quizRepo.find();
-    return quizzes.map(this.getQuizWithoutAnswer);
+  async findAll(options: IPaginationOptions): Promise<Pagination<Quiz>> {
+    const query = this.quizRepo.createQueryBuilder('q');
+    query.select(['q.id', 'q.title', 'q.text', 'q.options']);
+    return paginate<Quiz>(query, options);
   }
 
   async findOne(id: number) {
