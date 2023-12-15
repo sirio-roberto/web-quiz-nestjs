@@ -12,10 +12,13 @@ export class QuizzesService {
     private quizRepo: Repository<Quiz>,
   ) {}
 
-  async create(quiz: Quiz) {
+  async create(quiz: Quiz, user: User) {
     if (!quiz.answer) {
       quiz.answer = [];
     }
+
+    quiz.userId = user.id;
+
     const dbQuiz = await this.quizRepo.save(quiz);
 
     return this.getQuizWithoutAnswer(dbQuiz);
@@ -63,7 +66,7 @@ export class QuizzesService {
     return true;
   }
 
-  private getQuizWithoutAnswer(quiz: Quiz): Quiz {
+  private getQuizWithoutAnswer(quiz: Quiz): Quiz | any {
     return {
       id: quiz.id,
       title: quiz.title,

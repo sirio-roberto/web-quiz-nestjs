@@ -7,9 +7,16 @@ import {
   IsString,
   Validate,
 } from 'class-validator';
+import { User } from 'src/users/entities/user.entity';
 import { IsNumberArray } from 'src/validator/is-number-array.validator';
 import { IsStringArray } from 'src/validator/is-string-array.validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Quiz {
@@ -40,4 +47,12 @@ export class Quiz {
   @Validate(IsNumberArray)
   @Column('simple-json')
   answer?: number[];
+
+  @ManyToOne(() => User, (user) => user.quiz, { eager: false })
+  @JoinColumn({ name: 'userId' })
+  createdBy: User;
+
+  @Column()
+  @IsOptional()
+  userId: number;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { BasicStrategy } from 'passport-http';
 import { AuthService } from './auth.service';
@@ -10,7 +10,11 @@ export class HttpStrategy extends PassportStrategy(BasicStrategy) {
   }
 
   async validate(username: string, password: string): Promise<any> {
-    const user = await this.authService.validateUser(username, password);
-    return user;
+    try {
+      const user = await this.authService.validateUser(username, password);
+      return user;
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }

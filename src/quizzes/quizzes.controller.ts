@@ -8,6 +8,8 @@ import {
   UseGuards,
   Delete,
   Request,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
@@ -19,8 +21,8 @@ export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Post()
-  create(@Body() quiz: Quiz) {
-    return this.quizzesService.create(quiz);
+  create(@Body() quiz: Quiz, @Request() req: any) {
+    return this.quizzesService.create(quiz, req.user);
   }
 
   @Post(':id/solve')
@@ -41,6 +43,7 @@ export class QuizzesController {
     return this.quizzesService.findOne(id);
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   deleteQuizz(
     @Param('id', new ParseIntPipe()) id: number,
