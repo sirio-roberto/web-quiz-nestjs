@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Quiz } from './entities/quiz.entity';
 import { ResponseEntity } from './entities/response.entity';
 import { Repository } from 'typeorm';
@@ -39,14 +43,17 @@ export class QuizzesService {
   }
 
   async answerQuestion(id: number, answerObj: any) {
-    const quiz: Quiz = await this.findOne(id);
+    try {
+      const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
+      const answerArray = answerObj.answer;
 
-    const answerArray = answerObj.answer;
-
-    if (this.arraysEqual(quiz.answer, answerArray)) {
-      return new ResponseEntity(true, "Congratulations, you're right!");
-    } else {
-      return new ResponseEntity(false, 'Wrong answer! Please, try again.');
+      if (this.arraysEqual(quiz.answer, answerArray)) {
+        return new ResponseEntity(true, "Congratulations, you're right!");
+      } else {
+        return new ResponseEntity(false, 'Wrong answer! Please, try again.');
+      }
+    } catch {
+      throw new BadRequestException('Quiz not found');
     }
   }
 
@@ -76,8 +83,18 @@ export class QuizzesService {
   }
 
   async delete(id: number, user: User) {
-    const quiz: Quiz = await this.findOne(id);
+    let quiz: Quiz = null;
+    try {
+      quiz = await this.quizRepo.findOneByOrFail({ id });
+    } catch {
+      throw new BadRequestException('Quiz not found');
+    }
 
+    if (!user || user.id !== quiz.userId) {
+      throw new ForbiddenException(
+        'You can only delete quizzes created by you',
+      );
+    }
     await this.quizRepo.delete({ id });
   }
 }
