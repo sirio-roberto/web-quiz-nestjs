@@ -19,9 +19,4 @@ export class UsersService {
       throw new BadRequestException('Email address is already taken');
     }
   }
-
-  // should be edited later to hide password
-  findAll() {
-    return this.userRepo.find();
-  }
 }
