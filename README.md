@@ -1,73 +1,77 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Web Quiz Engine
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+The Web Quiz Engine is a RESTful web application that allows users to create, manage, and solve quizzes. It provides endpoints for quiz creation, retrieval, deletion, updating, and quiz solving. The application also supports user registration and authentication.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technologies Used
 
-## Description
+- JavaScript
+- TypeScrypt
+- NestJS
+- TypeORM
+- MySQL (or your preferred database)
+- JSON
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Key Features
 
-## Installation
+1. `User Registration`: Users can register for an account by providing their email and password. Duplicate email addresses are not allowed.
+2. `Quiz Creation`: Authenticated users can create quizzes by specifying the quiz title, question, answer options, and the correct answer(s).
+3. `Quiz Retrieval`: Users can retrieve a list of available quizzes. The API supports pagination to view quizzes page by page.
+4. `Quiz Solving`: Users can attempt to solve quizzes by providing their selected answer(s). The API checks the answers and provides feedback on correctness.
+5. `Quiz Deletion`: Quiz creators can delete their own quizzes.
+6. `Quiz Updating`: Quiz creators can update the title, question, answer options, and correct answer(s) of their quizzes.
+7. `Quiz Completion History`: Users can view their completed quizzes and check which ones they answered correctly.
 
-```bash
-$ npm install
-```
+## API Endpoints
 
-## Running the app
+- `/api/register` (POST): User registration.
+- `/api/quizzes` (GET): Retrieve a list of quizzes.
+- `/api/quizzes/{id}` (GET): Retrieve a specific quiz by ID.
+- `/api/quizzes/{id}` (DELETE): Delete a specific quiz by ID.
+- `/api/quizzes/{id}` (PUT): Update a specific quiz by ID.
+- `/api/quizzes` (POST): Create a new quiz.
+- `/api/quizzes/{id}/solve` (POST): Submit answers to a quiz.
+- `/api/quizzes/completed` (GET): Retrieve completed quizzes.
 
-```bash
-# development
-$ npm run start
+## Getting Started
 
-# watch mode
-$ npm run start:dev
+1. Clone the repository to your local machine:
 
-# production mode
-$ npm run start:prod
-```
+   ```
+   git clone git@github.com:sirio-roberto/web-quiz-nestjs.git
+   ```
 
-## Test
+2. Set up your database. You can configure the database connection in the `app.module.ts` file.
 
-```bash
-# unit tests
-$ npm run test
+3. Install the dependecies:
 
-# e2e tests
-$ npm run test:e2e
+   ```
+   npm install
+   ```
 
-# test coverage
-$ npm run test:cov
-```
+4. Run the application: `npm start` and the application will be accessible at http://localhost:3000.
 
-## Support
+## Usage
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+1. Register a new user using the `/api/register` endpoint.
+2. Create quizzes using the `/api/quizzes` endpoint.
+3. Retrieve, update, and delete quizzes using the respective endpoints.
+4. Solve quizzes using the `/api/quizzes/{id}/solve` endpoint.
+5. View completed quizzes using the `/api/quizzes/completed` endpoint.
 
-## Stay in touch
+## Security
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The application uses Spring Security for user authentication. Users must register and log in to create, update, or delete quizzes. Unauthorized users can only view quizzes and solve them.
 
-## License
+## Deployment
 
-Nest is [MIT licensed](LICENSE).
+To deploy the application to a production environment, configure a production database and update the application properties accordingly. Ensure that proper security measures are in place for user data protection.
+
+## Contributions
+
+Contributions to this project are welcome. Feel free to submit bug reports, feature requests, or pull requests.
+
+---
+
+Enjoy using the Web Quiz Engine! If you have any questions or encounter issues, please don't hesitate to reach out to the project maintainers.
+
+`Happy quizzing!`
