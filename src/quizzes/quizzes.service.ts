@@ -13,12 +13,15 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
+import { QuizCompletion } from './entities/quiz-completion.entity';
 
 @Injectable()
 export class QuizzesService {
   constructor(
     @InjectRepository(Quiz)
     private quizRepo: Repository<Quiz>,
+    @InjectRepository(QuizCompletion)
+    private quizCompletionRepo: Repository<QuizCompletion>,
   ) {}
 
   async create(quiz: Quiz, user: User) {
@@ -39,6 +42,18 @@ export class QuizzesService {
     return paginate<Quiz>(query, options);
   }
 
+  async findAllCompleted(
+    options: IPaginationOptions,
+    user: User,
+  ): Promise<Pagination<QuizCompletion>> {
+    const query = this.quizCompletionRepo.createQueryBuilder('q');
+    query
+      .select(['q.quizId', 'q.completedAt'])
+      .where('q.userId = :userId', { userId: user.id })
+      .orderBy('q.completedAt', 'DESC');
+    return paginate<QuizCompletion>(query, options);
+  }
+
   async findOne(id: number) {
     try {
       const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
@@ -48,12 +63,14 @@ export class QuizzesService {
     }
   }
 
-  async answerQuestion(id: number, answerObj: any) {
+  async answerQuestion(id: number, answerObj: any, user: User) {
     try {
       const quiz: Quiz = await this.quizRepo.findOneByOrFail({ id });
       const answerArray = answerObj.answer;
 
       if (this.arraysEqual(quiz.answer, answerArray)) {
+        const quizCompletion = new QuizCompletion(quiz.id, user.id, new Date());
+        this.quizCompletionRepo.save(quizCompletion);
         return new ResponseEntity(true, "Congratulations, you're right!");
       } else {
         return new ResponseEntity(false, 'Wrong answer! Please, try again.');

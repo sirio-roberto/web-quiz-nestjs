@@ -15,8 +15,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { QuizCompletion } from './quiz-completion.entity';
 
 @Entity()
 export class Quiz {
@@ -55,4 +57,7 @@ export class Quiz {
   @Column()
   @IsOptional()
   userId: number;
+
+  @OneToMany(() => QuizCompletion, (quizC) => quizC.quiz, { cascade: true })
+  quizCompletion: QuizCompletion[];
 }

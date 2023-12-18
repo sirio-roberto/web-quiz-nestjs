@@ -30,8 +30,21 @@ export class QuizzesController {
   postAnswer(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() answerObj: any,
+    @Request() req: any,
   ) {
-    return this.quizzesService.answerQuestion(id, answerObj);
+    return this.quizzesService.answerQuestion(id, answerObj, req.user);
+  }
+
+  @Get('completed')
+  findAllCompleted(@Query('page') page: number = 1, @Request() req: any) {
+    return this.quizzesService.findAllCompleted(
+      {
+        page,
+        limit: 10,
+        route: 'http://localhost:3000/quizzes',
+      },
+      req.user,
+    );
   }
 
   @Get()

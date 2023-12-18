@@ -6,6 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { QuizCompletion } from 'src/quizzes/entities/quiz-completion.entity';
 import { Quiz } from 'src/quizzes/entities/quiz.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -30,4 +31,9 @@ export class User {
 
   @OneToMany(() => Quiz, (quiz) => quiz.createdBy, { cascade: true })
   quiz: Quiz[];
+
+  @OneToMany(() => QuizCompletion, (quizC) => quizC.completedBy, {
+    cascade: true,
+  })
+  quizCompletion: QuizCompletion[];
 }
